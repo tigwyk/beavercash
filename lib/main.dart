@@ -2,6 +2,7 @@ import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:beavercash/userService.dart';
 
 void main() {
   runApp(MyApp());
@@ -90,6 +91,12 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         page = FavoritesPage();
         break;
+      case 2:
+        page = AddMoneyPage();
+        break;
+      case 3:
+        page = ProfilePage();
+        break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
     }
@@ -130,6 +137,28 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class AddMoneyPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    var pair = appState.current;
+
+    IconData icon;
+    if (appState.favorites.contains(pair)) {
+      icon = Icons.favorite;
+    } else {
+      icon = Icons.favorite_border;
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CashBalanceWidget(),
+      ],
+    );
+  }
+}
+
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -143,13 +172,11 @@ class HomePage extends StatelessWidget {
       icon = Icons.favorite_border;
     }
 
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CashBalanceWidget(),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CashBalanceWidget(),
+      ],
     );
   }
 }
@@ -179,6 +206,43 @@ class FavoritesPage extends StatelessWidget {
           ),
       ],
     );
+  }
+}
+
+class ProfilePage extends StatefulWidget {
+  ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  late Future<User> futureUser;
+
+  @override
+  void initState() {
+    super.initState();
+    futureUser = UserService().getUser();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Profile')),
+      body: Center(
+        child: FutureBuilder<User> (
+            future: futureUser, 
+            builder: ((context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return Text(snapshot.data?.name.first);
+              } else if (snapshot.hasError) {
+                return Text('${snapshot.error}');
+              }
+              return const CircularProgressIndicator();
+              }),
+      ),
+      ));
   }
 }
 
