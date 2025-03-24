@@ -1,51 +1,39 @@
+import 'dart:ffi';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:logging/logging.dart';
 
-
-class Name {
-  final String first;
-  final String last;
-
-  Name({
-    required this.first, 
-    required this.last
-    });
-
-  factory Name.fromJson(Map<String, dynamic> json) {
-    return Name(
-      first: json['first'],
-      last: json['last'],
-    );
-  }
-}
+final log = Logger('userServiceLogs');
 
 class User {
-  final Name name;
+  final int    id;
+  final String name;
   final String email;
-  final String picture;
 
   User({
+    required this.id,
     required this.name,
     required this.email,
-    required this.picture
-  });
+    });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      name: Name.fromJson(json['name']),
-      email: json['email'],
-      picture: json['picture']['medium']
-    );
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],    
+      );
   }
 }
 
 class UserService {
   Future<User> getUser() async {
-    final response = await http.get(Uri.parse('https://randomuser.me/api/'));
-
+    final response = await http.get(Uri.parse('http://localhost:3000/api/users/0'));
+    log.info('Response status: ${response.statusCode}');
+    log.info('Response body: ${response.body}');
     if (response.statusCode == 200) {
-      return User.fromJson(jsonDecode(response.body)['results'][0]);
-    } else {
+      return User.fromJson(jsonDecode(response.body));
+        } else {
       throw Exception('Failed to load user');
     }
   }
