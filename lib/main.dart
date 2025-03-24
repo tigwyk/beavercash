@@ -4,12 +4,16 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:beavercash/userService.dart';
 import 'package:logging/logging.dart';
+import 'package:firebase_core/firebase_core.dart'; 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-void main() {
+void main() async {
   Logger.root.level = Level.ALL; // defaults to Level.INFO
   Logger.root.onRecord.listen((record) {
     print('${record.level.name}: ${record.time}: ${record.message}');
   });
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -114,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.account_balance),
             label: 'Home',
           ),
           NavigationDestination(
