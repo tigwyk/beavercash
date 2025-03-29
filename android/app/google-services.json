@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "422244124062",
+    "project_id": "beavercash-1b414",
+    "storage_bucket": "beavercash-1b414.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422244124062:android:9a4ec0fc995009edc8028f",
+        "android_client_info": {
+          "package_name": "com.example.beavercash"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmPOEJWm5MuXZYPARCGTAZsQiy840YmVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
