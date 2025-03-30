@@ -1,45 +1,62 @@
 import 'package:beavercash/components/custom_button.dart';
 import 'package:beavercash/components/custom_textfield.dart';
 import 'package:beavercash/components/square_tile.dart';
+import 'package:beavercash/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:beavercash/services/auth_service.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final usernameController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void signIn() async {
+  void signUp() async {
     showDialog(context: context, builder: (context) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     });
     try {
-  await FirebaseAuth.instance.signInWithEmailAndPassword(
-    email: usernameController.text,
-    password: passwordController.text,
-  );
-  Navigator.pop(context);
+      if (passwordController.text != confirmPasswordController.text) {
+        showErrorMessage('Passwords do not match!');
+        return;
+      }
+      if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
+        showErrorMessage('Please fill in all fields!');
+        return;
+      }
+      if (passwordController.text.length < 8) {
+        showErrorMessage('Password must be at least 8 characters long!');
+        return;
+      }
+      if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(usernameController.text)) {
+        showErrorMessage('Please enter a valid email address!');
+        return;
+      }
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: usernameController.text,
+        password: passwordController.text,
+      );
+      Navigator.pop(context);
 
-} on FirebaseAuthException catch (e) {
-    Navigator.pop(context);
-  if (e.code == 'user-not-found') {
-    showErrorMessage('Email not found!');
-  } else if (e.code == 'wrong-password') {
-    showErrorMessage('Wrong password!');
-  } else {
-    showErrorMessage(e.code);
-  }
-  }
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      if (e.code == 'user-not-found') {
+        showErrorMessage('Email not found!');
+      } else if (e.code == 'wrong-password') {
+        showErrorMessage('Wrong password!');
+      } else {
+        showErrorMessage(e.code);
+      }
+    }
 } 
 
   @override
@@ -52,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-              SizedBox(height: 50),
+              SizedBox(height: 25),
               // logo
             const Icon(
               Icons.account_balance,
@@ -63,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                     
               // welcome back text
             Text(
-              'Welcome back, eh!',
+              'Create an account, buddy!',
               style: TextStyle( color: Colors.grey[700], fontSize: 16),
             ),
             const SizedBox(height: 20),
@@ -80,28 +97,19 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
               controller: passwordController,
             ),
-              // forgot password text
             SizedBox(height: 10),
-                    
-              // sign in button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'Forgot password?',
-                    style: TextStyle( color: Colors.grey[700]),
-                  ),
-                ],
-              ),
+            CustomTextfield(
+              hintText: 'Confirm Password',
+              obscureText: true,
+              controller: confirmPasswordController,
             ),
             SizedBox(height: 25.0),
               // or continue with
             CustomButton(
-              onTap: signIn,
-              text: 'Sign In',
-                        ),
+              onTap: signUp,
+              text: 'Sign Up',
+                // Handle sign in action
+            ),
             SizedBox(height: 25),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -142,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                 imagePath: 'lib/images/google.png',
                 onTap: () {
                   AuthService().signInWithGoogle();
-                 },
+                },
                 ),
               SizedBox(width: 25.0),
               SquareTile(
@@ -159,14 +167,14 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Not a member?',
+                  'Already a member?',
                   style: TextStyle( color: Colors.grey[700]),
                 ),
                 SizedBox(width: 4.0),
                 GestureDetector(
                   onTap: widget.onTap,
                   child: Text(
-                    'Register now',
+                    'Login here',
                     style: TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,

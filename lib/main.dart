@@ -1,5 +1,4 @@
 import 'package:beavercash/pages/auth_page.dart';
-import 'package:beavercash/pages/profile_page.dart';
 import 'package:beavercash/components/infocard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
