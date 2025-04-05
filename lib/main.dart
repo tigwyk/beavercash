@@ -1,16 +1,19 @@
 import 'package:beavercash/pages/auth_page.dart';
 import 'package:beavercash/components/infocard.dart';
+import 'package:beavercash/pages/notifications_page.dart';
+import 'package:beavercash/pages/settings_page.dart';
+import 'package:beavercash/state/app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logging/logging.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:beavercash/firebase_options.dart';
+// Import your profile page
+import 'package:beavercash/pages/profile_page.dart';
 
 void main() async {
-  // final storage = FlutterSecureStorage();
-  // await storage.write(key: 'jwt_token', value: 'your_jwt_token');
-  Logger.root.level = Level.ALL; // defaults to Level.INFO
+  // Logger.root.level = Level.ALL; // defaults to Level.INFO
   Logger.root.onRecord.listen((record) {
     print('${record.level.name}: ${record.time}: ${record.message}');
   });
@@ -18,109 +21,95 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  
+  final appState = BeaverCashAppState();
+  await appState.loadState();
+  
+  runApp(
+    ChangeNotifierProvider.value(
+      value: appState,
+      child: MyApp(),
+    ),
+  );
 }
+
+final log = Logger('beavercashLogs');
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'beavercash',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.red,
-            brightness: Brightness.dark,
+    return MaterialApp(
+      title: 'beavercash',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.red,
+          brightness: Brightness.dark,
+        ),
+        textTheme: TextTheme(
+          displayLarge: const TextStyle(
+            fontSize: 72,
+            fontWeight: FontWeight.bold,
           ),
-          textTheme: TextTheme(
-            displayLarge: const TextStyle(
-              fontSize: 72,
-              fontWeight: FontWeight.bold,
-            ),
-            titleLarge: GoogleFonts.oswald(
-              fontSize: 30,
-              fontStyle: FontStyle.italic,
-            ),
-            bodyMedium: GoogleFonts.merriweather(
-              fontSize: 14
-            ),
-            displaySmall: GoogleFonts.pacifico(
-              fontSize: 10,
-            ),
+          titleLarge: GoogleFonts.oswald(
+            fontSize: 30,
+            fontStyle: FontStyle.italic,
+          ),
+          bodyMedium: GoogleFonts.merriweather(
+            fontSize: 14
+          ),
+          displaySmall: GoogleFonts.pacifico(
+            fontSize: 10,
+          ),
+          bodyLarge: GoogleFonts.merriweather(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          bodySmall: GoogleFonts.merriweather(
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+          ),
+          titleMedium: GoogleFonts.oswald(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+          titleSmall: GoogleFonts.pacifico(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+          labelLarge: GoogleFonts.oswald(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+          labelSmall: GoogleFonts.pacifico(
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
           ),
         ),
-        home: AuthPage(),
       ),
-    );
-  }
-}
-
-class MyAppState extends ChangeNotifier {
-  int cashBalance = 1000;
-
-  void addMoney() {
-    cashBalance += 100;
-    notifyListeners();
-  }
-  
-  void cashOut() {
-    cashBalance = 0;
-    notifyListeners();
-  }
-}
-
-class AddMoneyPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        CashBalanceWidget(),
-      ],
-    );
-  }
-}
-
-
-class CashBalanceWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    
-    return InfoCard(
-      title: 'Cash Balance',
-      subtitle: 'Account & Routing',
-      bodyText: '\$${appState.cashBalance}',
-      buttons: [
-        ButtonInfo(
-          label: 'Add money',
-          onPressed: appState.addMoney,
-        ),
-        ButtonInfo(
-          label: 'Cash out',
-          onPressed: appState.cashOut,
-        ),
-      ],
-      onTap: () {
-        print('Cash balance card tapped');
+      // Define the initial route (home)
+      home: AuthPage(),
+      
+      // Define named routes
+      
+      routes: {
+        '/profile': (context) => ProfilePage(),
+        '/settings': (context) => SettingsPage(),
+        '/notifications': (context) => NotificationsPage(),
+        '/auth': (context) => AuthPage(), // Add this line
       },
-    );
-  }
-}
-
-class TransactionHistoryCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return InfoCard(
-      title: 'Transaction History',
-      subtitle: 'Recent Transactions',
-      bodyText: 'View your recent transactions here.',
-      onTap: () {
-        print('Transaction history card tapped');
+      
+      // Fallback for unknown routes
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(
+          builder: (context) => Scaffold(
+            appBar: AppBar(title: Text('Page Not Found')),
+            body: Center(
+              child: Text('The requested page does not exist.'),
+            ),
+          ),
+        );
       },
     );
   }
@@ -129,6 +118,8 @@ class TransactionHistoryCard extends StatelessWidget {
 class AccountCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return InfoCard(
       title: 'Account Status',
       subtitle: 'Details',
@@ -137,12 +128,15 @@ class AccountCard extends StatelessWidget {
           Icon(
             Icons.check_circle,
             color: Colors.green,
-            size: 36,
+            size: 28,
           ),
           SizedBox(width: 8),
           Text(
             'Verified',
-            textScaler: TextScaler.linear(1.3),
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              fontWeight: FontWeight.w500,
+              color: colorScheme.onSurface,
+            ),
           ),
         ],
       ),
@@ -150,12 +144,12 @@ class AccountCard extends StatelessWidget {
         ButtonInfo(
           label: 'Manage',
           onPressed: () {
-            print('Manage account tapped');
+            log.info('Manage account tapped');
           },
         ),
       ],
       onTap: () {
-        print('Account card tapped');
+        log.info('Account card tapped');
       },
     );
   }
@@ -164,72 +158,42 @@ class AccountCard extends StatelessWidget {
 class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return InfoCard(
       title: 'New Feature',
       subtitle: 'Announcement',
-      bodyText: 'Try our new savings tools!',
-      onTap: () {
-        print('Notification card tapped');
-      },
-    );
-  }
-}
-
-class SavingsCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return InfoCard(
-      title: 'Savings',
-      subtitle: 'Tools',
-      bodyContent: Container(
-        width: double.infinity, // Ensure content takes full width
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.savings,
-              color: Colors.green,
-              size: 36,
-            ),
-            Text(
-              '\$0.00',
-            ),
-          ],
-        ),
+      bodyContent: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.new_releases,
+                color: colorScheme.tertiary,
+                size: 24,
+              ),
+              SizedBox(width: 8),
+              Text(
+                'Try our new savings tools!',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
-      onTap: () {
-        print('Savings card tapped');
-      },
-    );
-  }
-}
-
-class CryptoCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return InfoCard(
-      title: 'Crypto',
-      subtitle: 'Tools',
-      bodyContent: Container(
-        width: double.infinity, // Make sure this is here
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.currency_bitcoin,
-              color: Colors.green,
-              size: 36,
-            ),
-            Text(
-              '\$0.00',
-            ),
-          ],
+      buttons: [
+        ButtonInfo(
+          label: 'Try Now',
+          onPressed: () {
+            log.info('Try savings tools tapped');
+          },
         ),
-      ),
+      ],
       onTap: () {
-        print('Crypto card tapped');
+        log.info('Notification card tapped');
       },
     );
   }

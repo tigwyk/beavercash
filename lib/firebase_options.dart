@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '422244124062',
     projectId: 'beavercash-1b414',
     storageBucket: 'beavercash-1b414.firebasestorage.app',
+    androidClientId: '422244124062-3lc8u00ht8ss5uvsuk43efa8ue98t67i.apps.googleusercontent.com',
+    iosClientId: '422244124062-uccj0boeu3vnns162fchhgadjpht1iil.apps.googleusercontent.com',
     iosBundleId: 'com.example.beavercash',
   );
 
@@ -72,6 +74,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '422244124062',
     projectId: 'beavercash-1b414',
     storageBucket: 'beavercash-1b414.firebasestorage.app',
+    androidClientId: '422244124062-3lc8u00ht8ss5uvsuk43efa8ue98t67i.apps.googleusercontent.com',
+    iosClientId: '422244124062-uccj0boeu3vnns162fchhgadjpht1iil.apps.googleusercontent.com',
     iosBundleId: 'com.example.beavercash',
   );
 

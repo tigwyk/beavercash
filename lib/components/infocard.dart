@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class ButtonInfo {
   final String label;
   final VoidCallback onPressed;
@@ -18,9 +17,6 @@ class InfoCard extends StatelessWidget {
   final Widget? bodyContent;
   final List<ButtonInfo>? buttons;
   final VoidCallback? onTap;
-  final double minWidth;
-  final double maxWidth;
-  final bool expanded;
 
   const InfoCard({
     Key? key,
@@ -30,162 +26,119 @@ class InfoCard extends StatelessWidget {
     this.bodyContent,
     this.buttons,
     this.onTap,
-    this.minWidth = 150.0,
-    this.maxWidth = double.infinity,
-    this.expanded = true,
-  }) : assert(bodyText != null || bodyContent != null, 'Either bodyText or bodyContent must be provided'),
-       super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Widget cardWrapper = expanded 
-      ? Expanded(
-          child: _buildCardContent(context),
-        )
-      : Flexible(
-          child: _buildCardContent(context),
-        );
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
     
-    return cardWrapper;
-  }
-
-  Widget _buildCardContent(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(8.0),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: InkWell(
         onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.min, // Keep this to prevent expansion issues
             children: [
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final titleStyle = TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.secondary,
-                  );
-                  final subtitleStyle = TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                  );
-                  
-                  if (constraints.maxWidth < 250) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: titleStyle,
-                          textScaler: TextScaler.linear(1.2),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          subtitle,
-                          style: subtitleStyle,
-                          textScaler: TextScaler.linear(0.8),
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Row(
-                      children: [
-                        Text(
-                          title,
-                          style: titleStyle,
-                          textScaler: TextScaler.linear(1.2),
-                        ),
-                        Spacer(),
-                        Text(
-                          subtitle,
-                          style: subtitleStyle,
-                          textScaler: TextScaler.linear(0.8),
-                        ),
-                      ],
-                    );
-                  }
-                },
-              ),
-              SizedBox(height: 8),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: bodyContent ?? Text(
-                  bodyText!,
-                  textScaler: TextScaler.linear(1.6),
-                  textAlign: TextAlign.left,
+              // Header with title and subtitle
+              Text(
+                title,
+                style: textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
                 ),
               ),
-              if (buttons != null && buttons!.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      if (constraints.maxWidth < 250 && buttons!.length > 1) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: buttons!.map((button) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 8.0),
-                              child: FilledButton.tonal(
-                                onPressed: button.onPressed,
-                                child: Text(button.label),
-                              ),
-                            );
-                          }).toList(),
-                        );
-                      } else {
-                        return Row(
-                          children: _buildButtonsRow(buttons!),
-                        );
-                      }
-                    },
+              SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+              SizedBox(height: 16),
+              
+              // Card body - either text or custom content
+              if (bodyText != null)
+                Container(
+                  width: double.infinity,
+                  child: Text(
+                    bodyText!,
+                    style: textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: colorScheme.onSurface,
+                    ),
                   ),
                 ),
+              if (bodyContent != null) 
+                Container(
+                  width: double.infinity,
+                  child: bodyContent!,
+                ),
+              
+              // Buttons section if any
+              if (buttons != null && buttons!.isNotEmpty) ...[
+                SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: buttons!.map((button) => 
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: TextButton(
+                        onPressed: button.onPressed,
+                        style: TextButton.styleFrom(
+                          foregroundColor: colorScheme.primary,
+                          textStyle: TextStyle(fontWeight: FontWeight.bold),
+                          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        ),
+                        child: Text(button.label),
+                      ),
+                    )
+                  ).toList(),
+                ),
+              ],
             ],
           ),
         ),
       ),
     );
-  } 
-  List<Widget> _buildButtonsRow(List<ButtonInfo> buttons) {
-    final List<Widget> buttonWidgets = [];
-    
-    for (int i = 0; i < buttons.length; i++) {
-      buttonWidgets.add(
-        FilledButton.tonal(
-          onPressed: buttons[i].onPressed,
-          child: Text(buttons[i].label),
-        ),
-      );
-      
-      if (i < buttons.length - 1) {
-        buttonWidgets.add(Spacer());
-      }
-    }
-    
-    return buttonWidgets;
   }
 }
 
 class QuickActionCard extends StatelessWidget {
   final String action;
+  final IconData icon;
+  final Color? color;
+  final VoidCallback? onTap;
   
-  QuickActionCard(this.action);
+  QuickActionCard({
+    required this.action, 
+    required this.icon,
+    this.color,
+    this.onTap,
+  });
   
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return InfoCard(
       title: action,
       subtitle: 'Quick Action',
       bodyContent: Center(
         child: Icon(
-          action == 'Send' ? Icons.send :
-          action == 'Request' ? Icons.request_page :
-          Icons.payment,
+          icon,
           size: 36,
+          color: color ?? colorScheme.primary,
         ),
       ),
-      onTap: () {
+      onTap: onTap ?? () {
         print('$action tapped');
       },
     );
