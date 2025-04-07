@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>422244124062-m6dt24i1m6d82mph9jr51vjmdbjg9tid.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.422244124062-m6dt24i1m6d82mph9jr51vjmdbjg9tid</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>422244124062-3lc8u00ht8ss5uvsuk43efa8ue98t67i.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCnTHOm9w7AtbwdgQKlzOZO1tYsp_okV0Q</string>
+	<key>GCM_SENDER_ID</key>
+	<string>422244124062</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.soylentcola.beavercash</string>
+	<key>PROJECT_ID</key>
+	<string>beavercash-1b414</string>
+	<key>STORAGE_BUCKET</key>
+	<string>beavercash-1b414.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:422244124062:ios:6cb79fadce76b59ec8028f</string>
+</dict>
+</plist>
