@@ -7,20 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:422244124062:android:9a4ec0fc995009edc8028f",
+        "mobilesdk_app_id": "1:422244124062:android:1af30b133965bafbc8028f",
         "android_client_info": {
-          "package_name": "com.example.beavercash"
+          "package_name": "com.soylentcola.beavercash"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "422244124062-3lc8u00ht8ss5uvsuk43efa8ue98t67i.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.beavercash",
-            "certificate_hash": "5580064dd33473a67447ba828d0812e9f04ebd5b"
-          }
-        },
         {
           "client_id": "422244124062-99gl0qpdhv2do1h5ihq9mhnm31all57f.apps.googleusercontent.com",
           "client_type": 3
@@ -39,10 +31,10 @@
               "client_type": 3
             },
             {
-              "client_id": "422244124062-uccj0boeu3vnns162fchhgadjpht1iil.apps.googleusercontent.com",
+              "client_id": "422244124062-m6dt24i1m6d82mph9jr51vjmdbjg9tid.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.beavercash"
+                "bundle_id": "com.soylentcola.beavercash"
               }
             }
           ]

@@ -113,32 +113,6 @@ class _PayPageState extends State<PayPage> {
                       );
                     },
                   ),
-                  
-                  // // Profile button
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     // Navigate to profile using the named route
-                  //     Navigator.pushNamed(context, '/profile');
-                  //   },
-                  //   child: CircleAvatar(
-                  //     radius: 18,
-                  //     backgroundColor: colorScheme.primaryContainer,
-                  //     backgroundImage: currentUser?.photoURL != null
-                  //         ? NetworkImage(currentUser!.photoURL!)
-                  //         : null,
-                  //     child: currentUser?.photoURL == null
-                  //         ? Text(
-                  //             currentUser?.displayName?.isNotEmpty == true
-                  //                 ? currentUser!.displayName![0].toUpperCase()
-                  //                 : '?',
-                  //             style: TextStyle(
-                  //               color: colorScheme.onPrimaryContainer,
-                  //               fontWeight: FontWeight.bold,
-                  //             ),
-                  //           )
-                  //         : null,
-                  //   ),
-                  // ),
                 ],
               ),
             ),

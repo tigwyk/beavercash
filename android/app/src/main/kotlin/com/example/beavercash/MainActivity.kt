@@ -1,4 +1,4 @@
-package com.example.beavercash
+package com.soylentcola.beavercash
 
 import io.flutter.embedding.android.FlutterActivity
 

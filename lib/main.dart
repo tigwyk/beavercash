@@ -1,5 +1,6 @@
 import 'package:beavercash/pages/auth_page.dart';
 import 'package:beavercash/components/infocard.dart';
+import 'package:beavercash/pages/history_page.dart';
 import 'package:beavercash/pages/notifications_page.dart';
 import 'package:beavercash/pages/settings_page.dart';
 import 'package:beavercash/state/app_state.dart';
@@ -94,10 +95,15 @@ class MyApp extends StatelessWidget {
       // Define named routes
       
       routes: {
+        // '/': (context) => AuthPage(),
         '/profile': (context) => ProfilePage(),
         '/settings': (context) => SettingsPage(),
+        '/login': (context) => AuthPage(),
+        '/signup': (context) => AuthPage(),
+        // '/crypto': (context) => CryptoPage(),
         '/notifications': (context) => NotificationsPage(),
-        '/auth': (context) => AuthPage(), // Add this line
+        '/history': (context) => HistoryPage(),
+        '/auth': (context) => AuthPage(),
       },
       
       // Fallback for unknown routes

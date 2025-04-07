@@ -50,7 +50,7 @@ class FirestoreService {
 
   // Add a method to create a user after Firebase Auth sign-in
   Future<bool> createUserAfterSignIn(
-      {required String uid, required String email, String? displayName}) async {
+      {required String uid, required String email, String? displayName, String? beaverTag, String? photoURL}) async {
     try {
       // Check if user already exists
       final docSnapshot = await usersCollection.doc(uid).get();
@@ -65,6 +65,8 @@ class FirestoreService {
       final user = User(
         uid: uid,
         email: email,
+        beavertag: beaverTag,
+        photoURL: photoURL,
         displayName: displayName ?? email.split('@').first, // Use first part of email if no display name
       );
 

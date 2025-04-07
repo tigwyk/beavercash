@@ -32,14 +32,18 @@
 	<array>
 	<dict>
 	<key>CFBundleTypeRole</key>
-		<string>Editor</string>
-		<key>CFBundleURLSchemes</key>
-		<array>
-			<string>com.googleusercontent.apps.422244124062-uccj0boeu3vnns162fchhgadjpht1iil</string>
-		</array>
+	<string>Editor</string>
+	<key>CFBundleURLSchemes</key>
+	<array>
+	<string>com.googleusercontent.apps.422244124062-uccj0boeu3vnns162fchhgadjpht1iil</string>
+	</array>
 	<key>GIDClientID</key>
 	<string>422244124062-uccj0boeu3vnns162fchhgadjpht1iil.apps.googleusercontent.com</string>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library to upload images.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera to take pictures.</string>
 </array>
 </dict>
 </plist>

@@ -4,10 +4,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:logging/logging.dart';
-// Conditionally import dart:html only for web
-
 
 import 'dart:io';
+
+import 'package:username_generator/username_generator.dart';
 
 final log = Logger('authServiceLogs');
 
@@ -16,6 +16,7 @@ class AuthService {
 
   // Google sign in
   signInWithGoogle() async {
+    final generator = UsernameGenerator();
     log.info("Signing in with Google...");
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
     if (gUser == null) {
@@ -37,13 +38,15 @@ class AuthService {
       return null;
     }
     log.info("Google sign in successful: ${user.user?.uid}");
-
+    
     // Create user in Firestore using the new method
     log.info("Creating user document in Firestore...");
     bool success = await firestoreService.createUserAfterSignIn(
       uid: user.user!.uid,
       email: user.user!.email!,
-      displayName: user.user?.displayName, 
+      displayName: user.user?.displayName,
+      beaverTag: generator.generate(user.user!.email!),
+      photoURL: user.user?.photoURL,
     );
     
     if (success) {
@@ -69,7 +72,7 @@ class AuthService {
         return Uri.parse('https://beavercash-1b414.firebaseapp.com/__/auth/handler');
       } else if (Platform.isAndroid) {
         // For Android, use a custom URL scheme or app link
-        return Uri.parse('com.example.beavercash://login-callback');
+        return Uri.parse('com.soylentcola.beavercash://login-callback');
       } else {
         // Fallback for other platforms
         return Uri.parse('https://beavercash-1b414.firebaseapp.com/__/auth/handler');
@@ -83,7 +86,7 @@ class AuthService {
         AppleIDAuthorizationScopes.fullName,
       ],
       webAuthenticationOptions: WebAuthenticationOptions(
-        clientId: 'com.example.beavercash',
+        clientId: 'com.soylentcola.beavercash',
         redirectUri: getRedirectUri(),
       ),
     );

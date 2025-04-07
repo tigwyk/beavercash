@@ -22,17 +22,27 @@ class User {
   String? displayName;
   String? email;
   String? uid;
+  String? beavertag;
+  String? photoURL;
   Timestamp? createdAt;
   Map<String, dynamic>? accountBalances;
   Map<String, Map<String, dynamic>>? bankAccounts;
+  bool? isPublic;
+  bool? isVerified;
+  bool? isBusiness;
 
   User({
     this.displayName,
     this.email,
     this.uid,
+    this.beavertag,
+    this.photoURL,
     this.createdAt,
     this.accountBalances,
     this.bankAccounts,
+    this.isPublic,
+    this.isVerified,
+    this.isBusiness,
   });
 
   // Convert a User object to a Map
@@ -41,9 +51,14 @@ class User {
       'displayName': displayName,
       'email': email,
       'uid': uid,
+      'beavertag': beavertag,
+      'photoURL': photoURL,
       'createdAt': createdAt ?? Timestamp.now(),
       'accountBalances': accountBalances ?? {},
       'bankAccounts': bankAccounts ?? {},
+      'isPublic': isPublic ?? false,
+      'isVerified': isVerified ?? false,
+      'isBusiness': isBusiness ?? false,
     };
   }
 
@@ -64,11 +79,16 @@ class User {
       displayName: data['displayName'],
       email: data['email'],
       uid: data['uid'],
+      beavertag: data['beavertag'],
+      photoURL: data['photoURL'],
       createdAt: data['createdAt'],
       accountBalances: data['accountBalances'] != null
           ? Map<String, dynamic>.from(data['accountBalances'])
           : {},
       bankAccounts: bankAccountsMap,
+      isPublic: data['isPublic'] ?? false,
+      isVerified: data['isVerified'] ?? false,
+      isBusiness: data['isBusiness'] ?? false,
     );
   }
 

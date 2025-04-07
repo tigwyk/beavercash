@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAmPOEJWm5MuXZYPARCGTAZsQiy840YmVQ',
-    appId: '1:422244124062:android:9a4ec0fc995009edc8028f',
+    appId: '1:422244124062:android:1af30b133965bafbc8028f',
     messagingSenderId: '422244124062',
     projectId: 'beavercash-1b414',
     storageBucket: 'beavercash-1b414.firebasestorage.app',
@@ -59,24 +59,24 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCnTHOm9w7AtbwdgQKlzOZO1tYsp_okV0Q',
-    appId: '1:422244124062:ios:6155fe2f12aabc10c8028f',
+    appId: '1:422244124062:ios:6cb79fadce76b59ec8028f',
     messagingSenderId: '422244124062',
     projectId: 'beavercash-1b414',
     storageBucket: 'beavercash-1b414.firebasestorage.app',
     androidClientId: '422244124062-3lc8u00ht8ss5uvsuk43efa8ue98t67i.apps.googleusercontent.com',
-    iosClientId: '422244124062-uccj0boeu3vnns162fchhgadjpht1iil.apps.googleusercontent.com',
-    iosBundleId: 'com.example.beavercash',
+    iosClientId: '422244124062-m6dt24i1m6d82mph9jr51vjmdbjg9tid.apps.googleusercontent.com',
+    iosBundleId: 'com.soylentcola.beavercash',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyCnTHOm9w7AtbwdgQKlzOZO1tYsp_okV0Q',
-    appId: '1:422244124062:ios:6155fe2f12aabc10c8028f',
+    appId: '1:422244124062:ios:6cb79fadce76b59ec8028f',
     messagingSenderId: '422244124062',
     projectId: 'beavercash-1b414',
     storageBucket: 'beavercash-1b414.firebasestorage.app',
     androidClientId: '422244124062-3lc8u00ht8ss5uvsuk43efa8ue98t67i.apps.googleusercontent.com',
-    iosClientId: '422244124062-uccj0boeu3vnns162fchhgadjpht1iil.apps.googleusercontent.com',
-    iosBundleId: 'com.example.beavercash',
+    iosClientId: '422244124062-m6dt24i1m6d82mph9jr51vjmdbjg9tid.apps.googleusercontent.com',
+    iosBundleId: 'com.soylentcola.beavercash',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
